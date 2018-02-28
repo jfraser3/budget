@@ -7,16 +7,17 @@
 //
 
 import UIKit
+import CoreData
 
+class CollectionViewController: UICollectionViewController, UIPopoverPresentationControllerDelegate {
 
-class CollectionViewController: UICollectionViewController {
-
-    var envelopes = [EnvelopeItem]()
+    var fetchedResultsController: NSFetchedResultsController<Envelope>?
+    var envelopes = [Envelope]()
     fileprivate var longPressGesture: UILongPressGestureRecognizer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let width = collectionView!.frame.width / 4
+        let width = collectionView!.frame.width / 3
         let layout = collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: width, height: width)
         // Uncomment the following line to preserve selection between presentations
@@ -26,9 +27,9 @@ class CollectionViewController: UICollectionViewController {
 
         longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongGesture(gesture:)))
         collectionView?.addGestureRecognizer(longPressGesture)
-        for i in 1...20 {
-            envelopes.append(EnvelopeItem(title: "Title #0\(i)", imageName: "img\(i).jpg"))
-        }
+        //for i in 1...20 {
+        //    envelopes.append(EnvelopeItem(title: "Title #0\(i)", imageName: "img\(i).jpg"))
+        //}
 
     }
 
@@ -38,9 +39,72 @@ class CollectionViewController: UICollectionViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<Envelope>(entityName: "Envelope")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: nil, cacheName: "PersonsCache") //as? NSFetchedResultsController<Envelope>
+        fetchedResultsController?.delegate = self as NSFetchedResultsControllerDelegate
+        do {
+            try fetchedResultsController?.performFetch()
+        } catch {
+            fatalError("Unable to fetch: \(error)")
+        }
+        /*if envelopes.count == 0 {
 
+            let entity = NSEntityDescription.entity(forEntityName: "Envelope", in: managedContext)
+            let env = Envelope(entity: entity!, insertInto: managedContext)
+            env.amount = 0
+            env.image = "img1.jpg"
+            env.name = "babies"
+            envelopes.append(env)
+        }
+        else {
+            
+        }*/
     }
 
+    @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
+        /*let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let entity = NSEntityDescription.entity(forEntityName: "Envelope", in: context)
+        
+        let envelope = Envelope(entity: entity!, insertInto: context)
+        envelope.image = "img2.jpg"
+        appDelegate.saveContext()
+        envelopes.append(envelope)
+        
+        self.collectionView?.reloadData()
+        print("added one item")
+        print("total: \(envelopes.count)")*/
+        
+        //let randomFirstName = firstNames[Int(arc4random_uniform(UInt32(firstNames.count)))]
+        //let randomLastName = lastNames[Int(arc4random_uniform(UInt32(lastNames.count)))]
+        //let randomAge = ages[Int(arc4random_uniform(UInt32(ages.count)))]
+        
+        /*let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let entity = NSEntityDescription.entity(forEntityName: "Envelope", in: context)
+        
+        let envelope = Envelope(entity: entity!, insertInto: context)
+        //person.firstName = randomFirstName
+        //person.lastName = randomLastName
+        //person.age = Int32(randomAge)
+        envelope.name = "hi"
+        envelope.image = "img2.jpg"
+        envelope.amount = 406
+        appDelegate.saveContext() */
+        
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "AddEnvPopUpVC")
+        viewController.modalPresentationStyle = .popover
+        let popover: UIPopoverPresentationController = viewController.popoverPresentationController!
+        popover.barButtonItem = sender
+        popover.delegate = self
+        present(viewController, animated: true, completion:nil)
+    }
     /*
     // MARK: - Navigation
 
@@ -53,18 +117,35 @@ class CollectionViewController: UICollectionViewController {
 
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return envelopes.count
+        guard let sectionInfo = fetchedResultsController?.sections?[section] else {
+            fatalError("Failed to load fetched results controller")
+        }
+        
+        return sectionInfo.numberOfObjects
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    /*override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! EnvItemCell
         let envelopeItem = envelopes[indexPath.item]
         cell.envelopeItem = envelopeItem
+        
+        return cell
+    }*/
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let fetchedResultsController = fetchedResultsController else {
+            fatalError("Failed to load fetched results controller")
+        }
+        
+        let envelope = fetchedResultsController.object(at: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! EnvItemCell
+        //let firstName = person.firstName
+        //let lastName = person.lastName
+        //let age = person.age
+        //let statement = "\(firstName!) \(lastName!) age \(age)"
+        //cell.dataItemTextField.text = statement
+        cell.envelopeItem = envelope
         
         return cell
     }
@@ -78,6 +159,37 @@ class CollectionViewController: UICollectionViewController {
         print("Ending Index: \(destinationIndexPath.item)")
         let temp = envelopes.remove(at: sourceIndexPath.item)
         envelopes.insert(temp, at: destinationIndexPath.item)
+    }
+    
+    func controller(_ control: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let newIndexPath = newIndexPath else {
+                fatalError("New index path is nil")
+            }
+            
+            collectionView?.insertItems(at: [newIndexPath])
+        case .delete:
+            guard let indexPath = indexPath else {
+                fatalError("Index path is nil")
+            }
+            
+            collectionView?.deleteItems(at: [indexPath])
+        case .move:
+            guard let newIndexPath = newIndexPath,
+                let indexPath = indexPath else {
+                    fatalError("Index path or new index path is nil?")
+            }
+            
+            collectionView?.deleteItems(at: [indexPath])
+            collectionView?.insertItems(at: [newIndexPath])
+        case .update:
+            guard let indexPath = indexPath else {
+                fatalError("Index path is nil")
+            }
+            
+            collectionView?.reloadItems(at: [indexPath])
+        }
     }
     
     
@@ -96,6 +208,31 @@ class CollectionViewController: UICollectionViewController {
         default:
             collectionView?.cancelInteractiveMovement()
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    // Called when user taps outside the text field
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .fullScreen
+    }
+    
+    func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
+        let navigationController = UINavigationController(rootViewController: controller.presentedViewController)
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(CollectionViewController.dismissViewController))
+        navigationController.topViewController?.navigationItem.rightBarButtonItem = doneButton
+        return navigationController
+    }
+    
+    @objc func dismissViewController() {
+        self.dismiss(animated: true, completion: nil)
     }
 
     // MARK: UICollectionViewDelegate
@@ -129,4 +266,8 @@ class CollectionViewController: UICollectionViewController {
     }
     */
 
+}
+
+extension CollectionViewController: NSFetchedResultsControllerDelegate {
+    
 }
