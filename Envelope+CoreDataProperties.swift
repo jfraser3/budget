@@ -18,7 +18,7 @@ extension Envelope {
     }
 
     @NSManaged public var name: String?
-    @NSManaged public var index: Int16
+    @NSManaged public var index: Int64
     @NSManaged public var amount: Double
     @NSManaged public var image: String?
 

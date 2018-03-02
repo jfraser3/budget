@@ -45,6 +45,8 @@
 		51B446A6203CA293006AA35F /* Envelope+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B446A4203CA293006AA35F /* Envelope+CoreDataClass.swift */; };
 		51B446A7203CA293006AA35F /* Envelope+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B446A5203CA293006AA35F /* Envelope+CoreDataProperties.swift */; };
 		51B447192047332D006AA35F /* AddEnvPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B447182047332D006AA35F /* AddEnvPopUpVC.swift */; };
+		51B4471B20486266006AA35F /* ImageCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B4471A20486266006AA35F /* ImageCollectionVC.swift */; };
+		51B4471D2048656D006AA35F /* ImageItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B4471C2048656D006AA35F /* ImageItemCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +90,8 @@
 		51B446A4203CA293006AA35F /* Envelope+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Envelope+CoreDataClass.swift"; sourceTree = "<group>"; };
 		51B446A5203CA293006AA35F /* Envelope+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Envelope+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		51B447182047332D006AA35F /* AddEnvPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEnvPopUpVC.swift; sourceTree = "<group>"; };
+		51B4471A20486266006AA35F /* ImageCollectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionVC.swift; sourceTree = "<group>"; };
+		51B4471C2048656D006AA35F /* ImageItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageItemCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,8 +128,10 @@
 			children = (
 				5167DE48202B639900A528B6 /* AppDelegate.swift */,
 				5167DE67202B6F3800A528B6 /* EnvItemCell.swift */,
+				51B4471C2048656D006AA35F /* ImageItemCell.swift */,
 				5167DE9E2038806E00A528B6 /* PageViewController.swift */,
 				5167DE5D202B68DE00A528B6 /* CollectionViewController.swift */,
+				51B4471A20486266006AA35F /* ImageCollectionVC.swift */,
 				5167DE69202B725100A528B6 /* unnamed.png */,
 				51B447182047332D006AA35F /* AddEnvPopUpVC.swift */,
 				5167DE65202B6A5E00A528B6 /* EnvelopeItem.swift */,
@@ -271,6 +277,8 @@
 			files = (
 				5167DE5E202B68DE00A528B6 /* CollectionViewController.swift in Sources */,
 				5167DE49202B639900A528B6 /* AppDelegate.swift in Sources */,
+				51B4471B20486266006AA35F /* ImageCollectionVC.swift in Sources */,
+				51B4471D2048656D006AA35F /* ImageItemCell.swift in Sources */,
 				5167DE66202B6A5E00A528B6 /* EnvelopeItem.swift in Sources */,
 				5167DE9F2038806E00A528B6 /* PageViewController.swift in Sources */,
 				5167DE51202B639900A528B6 /* Budget_App.xcdatamodeld in Sources */,

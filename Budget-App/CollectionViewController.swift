@@ -45,58 +45,16 @@ class CollectionViewController: UICollectionViewController, UIPopoverPresentatio
         let managedContext = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<Envelope>(entityName: "Envelope")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: nil, cacheName: "PersonsCache") //as? NSFetchedResultsController<Envelope>
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: nil, cacheName: "PersonsCache")
         fetchedResultsController?.delegate = self as NSFetchedResultsControllerDelegate
         do {
             try fetchedResultsController?.performFetch()
         } catch {
             fatalError("Unable to fetch: \(error)")
         }
-        /*if envelopes.count == 0 {
-
-            let entity = NSEntityDescription.entity(forEntityName: "Envelope", in: managedContext)
-            let env = Envelope(entity: entity!, insertInto: managedContext)
-            env.amount = 0
-            env.image = "img1.jpg"
-            env.name = "babies"
-            envelopes.append(env)
-        }
-        else {
-            
-        }*/
     }
 
     @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
-        /*let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        let entity = NSEntityDescription.entity(forEntityName: "Envelope", in: context)
-        
-        let envelope = Envelope(entity: entity!, insertInto: context)
-        envelope.image = "img2.jpg"
-        appDelegate.saveContext()
-        envelopes.append(envelope)
-        
-        self.collectionView?.reloadData()
-        print("added one item")
-        print("total: \(envelopes.count)")*/
-        
-        //let randomFirstName = firstNames[Int(arc4random_uniform(UInt32(firstNames.count)))]
-        //let randomLastName = lastNames[Int(arc4random_uniform(UInt32(lastNames.count)))]
-        //let randomAge = ages[Int(arc4random_uniform(UInt32(ages.count)))]
-        
-        /*let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        let entity = NSEntityDescription.entity(forEntityName: "Envelope", in: context)
-        
-        let envelope = Envelope(entity: entity!, insertInto: context)
-        //person.firstName = randomFirstName
-        //person.lastName = randomLastName
-        //person.age = Int32(randomAge)
-        envelope.name = "hi"
-        envelope.image = "img2.jpg"
-        envelope.amount = 406
-        appDelegate.saveContext() */
-        
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "AddEnvPopUpVC")
         viewController.modalPresentationStyle = .popover
@@ -150,16 +108,25 @@ class CollectionViewController: UICollectionViewController, UIPopoverPresentatio
         return cell
     }
     
-    override func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+    /*override func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
         return true
     }
     
     override func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         print("Starting Index: \(sourceIndexPath.item)")
         print("Ending Index: \(destinationIndexPath.item)")
-        let temp = envelopes.remove(at: sourceIndexPath.item)
-        envelopes.insert(temp, at: destinationIndexPath.item)
-    }
+        //let temp = envelopes.remove(at: sourceIndexPath.item)
+        //envelopes.insert(temp, at: destinationIndexPath.item)
+        guard let fetchedResultsController = fetchedResultsController else {
+            fatalError("Failed to load fetched results controller")
+        }
+        let num: Int! = fetchedResultsController.sections![0].numberOfObjects
+        fetchedResultsController.object(at: sourceIndexPath).index = destinationIndexPath.item
+        for i in 0...num {
+            fetchedResultsController.object(at: <#T##IndexPath#>)
+        }
+        
+    }*/
     
     func controller(_ control: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
@@ -226,7 +193,7 @@ class CollectionViewController: UICollectionViewController, UIPopoverPresentatio
     
     func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
         let navigationController = UINavigationController(rootViewController: controller.presentedViewController)
-        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(CollectionViewController.dismissViewController))
+        let doneButton = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(CollectionViewController.dismissViewController))
         navigationController.topViewController?.navigationItem.rightBarButtonItem = doneButton
         return navigationController
     }
