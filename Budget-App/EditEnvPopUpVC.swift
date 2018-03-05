@@ -1,8 +1,8 @@
 //
-//  AddEnvPopUpVC.swift
+//  EditEnvPopUpVC.swift
 //  Budget-App
 //
-//  Created by Joshua Fraser on 2/28/18.
+//  Created by Joshua Fraser on 3/2/18.
 //  Copyright © 2018 Joshua Fraser. All rights reserved.
 //
 
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class AddEnvPopUpVC: UIViewController, DataEnteredDelegate {
+class EditEnvPopUpVC: UIViewController, DataEnteredDelegate {
     
     var fetchedResultsController: NSFetchedResultsController<Envelope>?
     
@@ -28,51 +28,51 @@ class AddEnvPopUpVC: UIViewController, DataEnteredDelegate {
             fatalError("Unable to fetch: \(error)")
         }
         
-        /*let context = appDelegate.persistentContainer.viewContext
-        let entity = NSEntityDescription.entity(forEntityName: "Envelope", in: context)
+        guard let fetchedResultsController = fetchedResultsController else {
+            fatalError("Failed to load fetched results controller")
+        }
         
-        let envelope = Envelope(entity: entity!, insertInto: context)
-        envelope.name = envelopeTextField.text
-        let cost: Double? = Double(amountTextField.text!)
-        envelope.amount = cost!
-        let index: Int? = fetchedResultsController?.sections![0].numberOfObjects
-        envelope.index = Int64(index!)
-        envelope.image = "default.jpg"
-        envelopeImage.image = UIImage(named: envelope.image!)
-        appDelegate.saveContext()*/
-        envelopeImage.image = UIImage(named: "default.jpg")
-        envelopeTextField.text = "hi"
+        let envelope = fetchedResultsController.object(at: index!)
+        let name = envelope.name
+        let amount = envelope.amount
+        let envImage = envelope.image
+        envTextField.text = name
+        amTextField.text = String(amount)
+        imageView.image = UIImage(named: envImage!)
+        
     }
     
     func userDidPickImage(info: String) {
         envImageName = info
     }
     
-    @IBOutlet weak var envelopeTextField: UITextField!
-    @IBOutlet weak var amountTextField: UITextField!
-    @IBOutlet weak var envelopeImage: UIImageView!
+    @IBOutlet weak var envTextField: UITextField!
+    @IBOutlet weak var amTextField: UITextField!
+    @IBOutlet weak var imageView: UIImageView!
+    
     var envImageName: String?
+    var index: IndexPath?
     
     @IBAction func createButtonTapped(_ sender: Any) {
-         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-         let context = appDelegate.persistentContainer.viewContext
-         let entity = NSEntityDescription.entity(forEntityName: "Envelope", in: context)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let entity = NSEntityDescription.entity(forEntityName: "Envelope", in: context)
         
-         let envelope = Envelope(entity: entity!, insertInto: context)
-         //person.firstName = randomFirstName
-         //person.lastName = randomLastName
-         //person.age = Int32(randomAge)
-         envelope.name = envelopeTextField.text
+        let envelope = Envelope(entity: entity!, insertInto: context)
+        //person.firstName = randomFirstName
+        //person.lastName = randomLastName
+        //person.age = Int32(randomAge)
+        envelope.name = envTextField.text
         if envelope.image == "default.jpg" {
             //envelopeImage.image = UIImage(named:"default.jpg")
         } else {
             envelope.image = envImageName
         }
-         let cost: Double? = Double(amountTextField.text!)
-         envelope.amount = cost!
+        let cost: Double? = Double(amTextField.text!)
+        envelope.amount = cost!
         let index: Int? = fetchedResultsController?.sections![0].numberOfObjects
         envelope.index = Int64(index!)
-         appDelegate.saveContext()
+        appDelegate.saveContext()
         
         self.dismiss(animated: true, completion: nil)
         
@@ -89,7 +89,7 @@ class AddEnvPopUpVC: UIViewController, DataEnteredDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "selectImage" {
+        if segue.identifier == "showImage" {
             let pushedVC = segue.destination as! ImageCollectionVC
             pushedVC.delegate = self
         }

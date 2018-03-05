@@ -14,6 +14,7 @@ class CollectionViewController: UICollectionViewController, UIPopoverPresentatio
     var fetchedResultsController: NSFetchedResultsController<Envelope>?
     var envelopes = [Envelope]()
     fileprivate var longPressGesture: UILongPressGestureRecognizer!
+    fileprivate var tapGesture: UITapGestureRecognizer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +28,7 @@ class CollectionViewController: UICollectionViewController, UIPopoverPresentatio
 
         longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongGesture(gesture:)))
         collectionView?.addGestureRecognizer(longPressGesture)
+
         //for i in 1...20 {
         //    envelopes.append(EnvelopeItem(title: "Title #0\(i)", imageName: "img\(i).jpg"))
         //}
@@ -105,14 +107,64 @@ class CollectionViewController: UICollectionViewController, UIPopoverPresentatio
         //cell.dataItemTextField.text = statement
         cell.envelopeItem = envelope
         
+        //tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(sender:)))
+        //cell.addGestureRecognizer(tapGesture)
+        cell.isUserInteractionEnabled = true
+        
         return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath as IndexPath) {
+            performSegue(withIdentifier: "showDetail", sender: cell)
+        } else {
+            // Error indexPath is not on screen: this should never happen.
+        }
     }
     
     /*override func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
         return true
+    }*/
+     
+     /*@objc func handleTapGesture(sender: UITapGestureRecognizer){
+        //guard let fetchedResultsController = fetchedResultsController else {
+        //    fatalError("Failed to load fetched results controller")
+        //}
+     
+        //let envelope = fetchedResultsController.object(at: indexPath)
+     
+        if let indexPath = self.collectionView?.indexPathForItem(at: sender.location(in: self.collectionView)) {
+            //let cell = self.collectionView?.cellForItem(at: indexPath) as! ImageItemCell
+            //let location = fetchedResultsController.sections![0].numberOfObjects - 1
+            //fetchedResultsController.fetchedObjects![location].image = cell.envelopeItem?.imageName
+            //let destinationViewController = EditEnvPopUpVC()
+            //destinationViewController.index = indexPath
+            //print(indexPath.item)
+            let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "EditEnvPopUpVC")
+            viewController.index = indexPath
+            navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            print("collection view was tapped")
+        }
+     
+     
+     }*/
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetail" {
+            let cell = sender as! EnvItemCell
+            let indexPath = self.collectionView?.indexPath(for: cell)
+            if segue.identifier == "showDetail" {
+                let detailVC: EditEnvPopUpVC = segue.destination as! EditEnvPopUpVC
+                detailVC.index = indexPath
+            }
+        } else {
+            // Error sender is not a cell or cell is not in collectionView.
+        }
     }
     
-    override func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    /*override func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         print("Starting Index: \(sourceIndexPath.item)")
         print("Ending Index: \(destinationIndexPath.item)")
         //let temp = envelopes.remove(at: sourceIndexPath.item)

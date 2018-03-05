@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		511DD63E2049BDB0008FC53F /* EditEnvPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511DD63D2049BDB0008FC53F /* EditEnvPopUpVC.swift */; };
 		5167DE49202B639900A528B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5167DE48202B639900A528B6 /* AppDelegate.swift */; };
 		5167DE4E202B639900A528B6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5167DE4C202B639900A528B6 /* Main.storyboard */; };
 		5167DE51202B639900A528B6 /* Budget_App.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5167DE4F202B639900A528B6 /* Budget_App.xcdatamodeld */; };
@@ -50,6 +51,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		511DD63D2049BDB0008FC53F /* EditEnvPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEnvPopUpVC.swift; sourceTree = "<group>"; };
 		5167DE45202B639900A528B6 /* Budget-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Budget-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5167DE48202B639900A528B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5167DE4D202B639900A528B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				51B4471A20486266006AA35F /* ImageCollectionVC.swift */,
 				5167DE69202B725100A528B6 /* unnamed.png */,
 				51B447182047332D006AA35F /* AddEnvPopUpVC.swift */,
+				511DD63D2049BDB0008FC53F /* EditEnvPopUpVC.swift */,
 				5167DE65202B6A5E00A528B6 /* EnvelopeItem.swift */,
 				5167DE4C202B639900A528B6 /* Main.storyboard */,
 				5167DE52202B639900A528B6 /* Assets.xcassets */,
@@ -282,6 +285,7 @@
 				5167DE66202B6A5E00A528B6 /* EnvelopeItem.swift in Sources */,
 				5167DE9F2038806E00A528B6 /* PageViewController.swift in Sources */,
 				5167DE51202B639900A528B6 /* Budget_App.xcdatamodeld in Sources */,
+				511DD63E2049BDB0008FC53F /* EditEnvPopUpVC.swift in Sources */,
 				5167DE68202B6F3800A528B6 /* EnvItemCell.swift in Sources */,
 				51B447192047332D006AA35F /* AddEnvPopUpVC.swift in Sources */,
 				51B446A6203CA293006AA35F /* Envelope+CoreDataClass.swift in Sources */,
