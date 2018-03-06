@@ -41,7 +41,7 @@ class AddEnvPopUpVC: UIViewController, DataEnteredDelegate {
         envelopeImage.image = UIImage(named: envelope.image!)
         appDelegate.saveContext()*/
         envelopeImage.image = UIImage(named: "default.jpg")
-        envelopeTextField.text = "hi"
+        //envelopeTextField.text = "hi"
     }
     
     func userDidPickImage(info: String) {

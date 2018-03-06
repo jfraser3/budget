@@ -28,6 +28,7 @@ class ImageCollectionVC: UICollectionViewController {
         let width = collectionView!.frame.width / 3
         let layout = collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: width, height: width)
+        collectionView?.contentInset = UIEdgeInsets(top: 10, left: 30, bottom: 10, right: 30)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -35,8 +36,8 @@ class ImageCollectionVC: UICollectionViewController {
         
         //tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTapGesture(gesture:)))
         //collectionView?.addGestureRecognizer(tapGesture)
-        for i in 1...12 {
-            envelopes.append(EnvelopeItem(title: "Title #0\(i)", imageName: "img\(i).jpg"))
+        for i in 1...6 {
+            envelopes.append(EnvelopeItem(title: "EnvIcon1", imageName: "icon1"))
         }
         
     }

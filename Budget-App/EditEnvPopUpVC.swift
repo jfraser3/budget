@@ -53,7 +53,7 @@ class EditEnvPopUpVC: UIViewController, DataEnteredDelegate {
     var envImageName: String?
     var index: IndexPath?
     
-    @IBAction func createButtonTapped(_ sender: Any) {
+    /*@IBAction func createButtonTapped(_ sender: Any) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: "Envelope", in: context)
@@ -75,6 +75,13 @@ class EditEnvPopUpVC: UIViewController, DataEnteredDelegate {
         appDelegate.saveContext()
         
         self.dismiss(animated: true, completion: nil)
+        
+    }*/
+    
+    @IBAction func deleteButtonTapped(_ sender: UIButton) {
+        guard let fetchedResultsController = fetchedResultsController else {
+            fatalError("Failed to load fetched results controller")
+        }
         
     }
     
